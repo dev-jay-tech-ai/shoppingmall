@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import Card from '../components/Card'
-import data from '../data'
 
-const Main = () => {
-    let [shoes] = useState(data)
+const MainPage = ({ shoes }) => {
 
     return (
         <>
@@ -12,7 +9,7 @@ const Main = () => {
                 <div className='row'>
                 {shoes.map((shoe,idx) => {
                     return (
-                    <Card key={idx} idx={idx+1} shoe={shoe} />
+                    <Card key={idx} idx={idx} shoe={shoe} />
                     );
                 })}
                 </div>
@@ -21,4 +18,4 @@ const Main = () => {
     )
 }
 
-export default Main
+export default MainPage
