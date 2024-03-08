@@ -1,11 +1,14 @@
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import { useDispatch } from "react-redux"
 import Tap from '../components/Tap'
 import styled from 'styled-components'
 import Context from '../Context'
+import { addItem } from "../store/cartItemsSlice"
 
 const DetailPage = () => {
     const context = useContext(Context)
+    const dispatch = useDispatch()
     const { shoes } = context
     const { id } = useParams()
     const [popup, setPopup] = useState(true)
@@ -40,8 +43,16 @@ const DetailPage = () => {
                     <h4 className='pt-5'>{shoes[id].title}</h4>
                     <p>{shoes[id].content}</p>
                     <p>{shoes[id].price}</p>
-
-                    <button className='btn btn-danger'>주문하기</button>
+                    <button 
+                        className='btn btn-danger'
+                        onClick={() => {
+                            const item = {}
+                            item.id = shoes[id].id
+                            item.name = shoes[id].title
+                            item.count = 1
+                            dispatch(addItem(item)) 
+                        }}
+                    >주문하기</button>
                 </div>
             </div>
             <Tap />
