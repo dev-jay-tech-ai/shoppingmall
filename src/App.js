@@ -9,10 +9,12 @@ import PageNotFound from './routes/PageNotFound'
 import AboutPage from './routes/About'
 import MemberPage from './routes/Member'
 import data from './data'
+import Context from './Context'
 
 function App() {
-  let [shoes] = useState(data)
-  let navigate = useNavigate()
+  const navigate = useNavigate()
+  const [shoes] = useState(data)
+  const [stock] = useState([10, 11, 12])
 
   return (
     <div className='App'>
@@ -27,8 +29,16 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path='/' element={<MainPage shoes={shoes} />} />
-        <Route path='/detail/:id' element={<DetailPage shoes={shoes} />} />
+        <Route path='/' element={
+          <Context.Provider value={{ stock, shoes }}>
+            <MainPage />
+          </Context.Provider>  
+        } />
+        <Route path='/detail/:id' element={
+          <Context.Provider value={{ stock, shoes }}>
+            <DetailPage />
+          </Context.Provider>
+        } />
         <Route path='/about' element={<AboutPage />}>
           <Route path='member' element={<MemberPage />} /> 
           <Route path='location' element={<AboutPage />} /> 

@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Card from '../components/Card'
 import axios from 'axios'
+import Context from '../Context'
 
-const MainPage = ({ shoes }) => {
+const MainPage = () => {
+    const context = useContext(Context)
+    const { shoes } = context;
     const [list, setList] = useState(shoes)
     const [count, setCount] = useState(2)
     return (

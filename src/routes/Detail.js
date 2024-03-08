@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Tap from '../components/Tap'
 import styled from 'styled-components'
+import Context from '../Context'
 
-const DetailPage = ({ shoes }) => {
+const DetailPage = () => {
+    const context = useContext(Context)
+    const { shoes } = context
     const { id } = useParams()
     const [popup, setPopup] = useState(true)
     const [num, setNum] = useState(true)
