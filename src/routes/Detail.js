@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import Tap from '../components/Tap'
 import styled from 'styled-components'
 
 const DetailPage = ({ shoes }) => {
     const { id } = useParams()
     const [popup, setPopup] = useState(true)
     const [num, setNum] = useState(true)
+    const [fade, setFade] = useState('')
 
     useEffect(() => {
         const timer = setTimeout(() => { setPopup(false) }, 2000)
@@ -16,9 +18,14 @@ const DetailPage = ({ shoes }) => {
         if(isNaN(num)) alert('숫자만 입력 가능')
     },[num])
 
+    useEffect(() => {
+        setFade('end')
+        return () => { setFade('') }
+    },[])
+
     return (
         <div className='container'>
-            { popup && <div className='alert alert-warning'>2초 이내 구매시 할인</div> }
+            { popup && <div className={ 'alert alert-warning start ' + fade}>2초 이내 구매시 할인</div> }
             <input type='text' onChange={(e) => setNum(e.target.value)} />
             <div className='row'>
                 <div className='col-md-6'>
@@ -34,6 +41,7 @@ const DetailPage = ({ shoes }) => {
                     <button className='btn btn-danger'>주문하기</button>
                 </div>
             </div>
+            <Tap />
         </div>
     )
 }
