@@ -8,6 +8,7 @@ const Card = ({ shoe, idx }) => {
             </Link>
             <h4>{shoe.title}</h4>
             <p>{shoe.content}</p>
+            <p>{shoe?.price}</p>
         </div>
     )
 }

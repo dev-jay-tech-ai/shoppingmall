@@ -4,16 +4,22 @@ import styled from 'styled-components'
 
 const DetailPage = ({ shoes }) => {
     const { id } = useParams()
-    const [alert, setAlert] = useState(true)
+    const [popup, setPopup] = useState(true)
+    const [num, setNum] = useState(true)
 
     useEffect(() => {
-        const timer = setTimeout(() => { setAlert(false) }, 2000)
+        const timer = setTimeout(() => { setPopup(false) }, 2000)
         return () => clearTimeout(timer)
     },[])
 
+    useEffect(() => {
+        if(isNaN(num)) alert('숫자만 입력 가능')
+    },[num])
+
     return (
         <div className='container'>
-            { alert && <div className='alert alert-warning'>2초 이내 구매시 할인</div> }
+            { popup && <div className='alert alert-warning'>2초 이내 구매시 할인</div> }
+            <input type='text' onChange={(e) => setNum(e.target.value)} />
             <div className='row'>
                 <div className='col-md-6'>
                     <img src={'https://codingapple1.github.io/shop/shoes'+ (Number(id)+1) + '.jpg'} 
@@ -28,7 +34,6 @@ const DetailPage = ({ shoes }) => {
                     <button className='btn btn-danger'>주문하기</button>
                 </div>
             </div>
-            
         </div>
     )
 }
