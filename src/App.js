@@ -8,6 +8,7 @@ import DetailPage from './routes/Detail'
 import PageNotFound from './routes/PageNotFound'
 import AboutPage from './routes/About'
 import MemberPage from './routes/Member'
+import CartPage from './routes/Cart'
 import data from './data'
 import Context from './Context'
 
@@ -23,6 +24,7 @@ function App() {
         <Navbar.Brand href="/">ShoeShop</Navbar.Brand>
         <Nav className="me-auto">
           <Nav.Link onClick={() => navigate('/') } >Home</Nav.Link>
+          <Nav.Link onClick={() => navigate('/cart') }>Cart</Nav.Link>
           <Nav.Link onClick={() => navigate('/about') }>About</Nav.Link>
         </Nav>
         </Container>
@@ -43,6 +45,7 @@ function App() {
           <Route path='member' element={<MemberPage />} /> 
           <Route path='location' element={<AboutPage />} /> 
         </Route>
+        <Route path='cart' element={<CartPage />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
 
