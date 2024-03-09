@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import { useQuery } from "react-query"
 import MainPage from './routes/Main'
 import DetailPage from './routes/Detail'
 import PageNotFound from './routes/PageNotFound'
@@ -11,10 +12,17 @@ import MemberPage from './routes/Member'
 import CartPage from './routes/Cart'
 import data from './data'
 import Context from './Context'
+import axios from 'axios'
 
 function App() {
   const navigate = useNavigate()
   const [shoes] = useState(data)
+
+  const result = useQuery('getName',() => {
+    return axios.get('https://codingapple1.github.io/userdata.json')
+      .then((result) => result.data )
+      ,{ staleTime : 2000 }
+  })
 
   useEffect(() => localStorage.getItem('viewed') && localStorage.setItem('viewed', JSON.stringify( [] )),[])
 
@@ -27,6 +35,11 @@ function App() {
           <Nav.Link onClick={() => navigate('/') } >Home</Nav.Link>
           <Nav.Link onClick={() => navigate('/cart') }>Cart</Nav.Link>
           <Nav.Link onClick={() => navigate('/about') }>About</Nav.Link>
+        </Nav>
+        <Nav className='ms-auto'>
+          { result.isLoading && 'Loading' }
+          { result.error && 'Error' }
+          { result.data && result.data.name }
         </Nav>
         </Container>
       </Navbar>
