@@ -1,18 +1,19 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import { useQuery } from "react-query"
 import MainPage from './routes/Main'
-import DetailPage from './routes/Detail'
-import PageNotFound from './routes/PageNotFound'
-import AboutPage from './routes/About'
-import MemberPage from './routes/Member'
-import CartPage from './routes/Cart'
 import data from './data'
 import Context from './Context'
 import axios from 'axios'
+
+const PageNotFound = lazy(() => import('./routes/PageNotFound')) 
+const DetailPage = lazy(() => import('./routes/Detail'))
+const AboutPage = lazy(() => import('./routes/About'))
+const MemberPage = lazy(() => import('./routes/Member'))
+const CartPage = lazy(() => import('./routes/Cart'))
 
 function App() {
   const navigate = useNavigate()
@@ -24,7 +25,10 @@ function App() {
       ,{ staleTime : 2000 }
   })
 
-  useEffect(() => localStorage.getItem('viewed') && localStorage.setItem('viewed', JSON.stringify( [] )),[])
+  useEffect(() => {
+    !localStorage.getItem('viewed') && localStorage.setItem('viewed', JSON.stringify( [] ))
+    return
+  },[])
 
   return (
     <div className='App'>
@@ -43,26 +47,26 @@ function App() {
         </Nav>
         </Container>
       </Navbar>
-
-      <Routes>
-        <Route path='/' element={
-          <Context.Provider value={{ shoes }}>
-            <MainPage />
-          </Context.Provider>  
-        } />
-        <Route path='/detail/:id' element={
-          <Context.Provider value={{ shoes }}>
-            <DetailPage />
-          </Context.Provider>
-        } />
-        <Route path='/about' element={<AboutPage />}>
-          <Route path='member' element={<MemberPage />} /> 
-          <Route path='location' element={<AboutPage />} /> 
-        </Route>
-        <Route path='cart' element={<CartPage />} />
-        <Route path='*' element={<PageNotFound />} />
-      </Routes>
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path='/' element={
+            <Context.Provider value={{ shoes }}>
+              <MainPage />
+            </Context.Provider>  
+          } />
+          <Route path='/detail/:id' element={
+            <Context.Provider value={{ shoes }}>
+              <DetailPage />
+            </Context.Provider>
+          } />
+          <Route path='/about' element={<AboutPage />}>
+            <Route path='member' element={<MemberPage />} /> 
+            <Route path='location' element={<AboutPage />} /> 
+          </Route>
+          <Route path='cart' element={<CartPage />} />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
+      </Suspense>
 
     </div>
   );
