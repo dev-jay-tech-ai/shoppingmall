@@ -1,7 +1,7 @@
 import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Button, Container, Nav, Navbar } from 'react-bootstrap'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import MainPage from './routes/Main'
 import DetailPage from './routes/Detail'
@@ -15,7 +15,8 @@ import Context from './Context'
 function App() {
   const navigate = useNavigate()
   const [shoes] = useState(data)
-  const [stock] = useState([10, 11, 12])
+
+  useEffect(() => localStorage.getItem('viewed') && localStorage.setItem('viewed', JSON.stringify( [] )),[])
 
   return (
     <div className='App'>
@@ -32,12 +33,12 @@ function App() {
 
       <Routes>
         <Route path='/' element={
-          <Context.Provider value={{ stock, shoes }}>
+          <Context.Provider value={{ shoes }}>
             <MainPage />
           </Context.Provider>  
         } />
         <Route path='/detail/:id' element={
-          <Context.Provider value={{ stock, shoes }}>
+          <Context.Provider value={{ shoes }}>
             <DetailPage />
           </Context.Provider>
         } />

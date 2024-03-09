@@ -11,6 +11,7 @@ const DetailPage = () => {
     const dispatch = useDispatch()
     const { shoes } = context
     const { id } = useParams()
+    const target = shoes.find((shoe) => shoe.id === Number(id))
     const [popup, setPopup] = useState(true)
     const [num, setNum] = useState(true)
     const [fade, setFade] = useState('')
@@ -27,6 +28,15 @@ const DetailPage = () => {
     useEffect(() => {
         setFade('end')
         return () => { setFade('') }
+    },[])
+
+    useEffect(() => {
+        let prev = localStorage.getItem('viewed')
+        prev = JSON.parse(prev)
+        prev.push(target.id)
+        prev = new Set(prev)
+        prev = [...prev]
+        localStorage.setItem('viewed',JSON.stringify(prev))
     },[])
 
     return (
